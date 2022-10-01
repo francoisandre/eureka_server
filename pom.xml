@@ -21,7 +21,7 @@
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-starter-parent</artifactId>
                 <type>pom</type>
-                <version>2021.0.0</version>
+                <version>2021.0.4</version>
                 <scope>import</scope>
             </dependency>
         </dependencies>
@@ -78,6 +78,24 @@
 					<target>${jdk.version}</target>
 				</configuration>
 			</plugin>
+			<plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <inherited>false</inherited>
+                <executions>
+                    <execution>
+                        <id>uploadToSedooRepo</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>curl</executable>
+                            <commandlineArgs>--request POST --header 'Content-Type: multipart/form-data' -F 'file=@./target/${project.artifactId}-${project.version}.jar' https://api.sedoo.fr/aeris-cdn-rest/jarrepo/v1_0/upload</commandlineArgs>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
 		</plugins>
 	</build>
     
